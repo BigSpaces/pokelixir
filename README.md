@@ -37,9 +37,9 @@ Extensive documentation (a couple of paragraphs so far) can be found at <https:/
 
 ### Features
 
-Get your daily API dopamine hit by retrieving basic information about a pokemon. Pass your preferred pokemon's name to the function `Pokelixir.get_by_name/1`. The data is stored in a ´%Pokelixir{}´ struct.
+Get your daily API dopamine hit by retrieving basic information about a pokemon. Pass your preferred pokemon's name to the function `Pokelixir.get_by_name/1`. The data is stored in a `%Pokelixir{}` struct.
 
-Alternatively, you may populate your local cache with all of the pokemons available through the API. Use ´Pokelixir.all()´. Delight in knowing that it is all happening under the careful supervision of a... supervisor.
+Alternatively, you may populate your local cache with all of the pokemons available through the API. Use `Pokelixir.all()`. Delight in knowing that it is all happening under the careful supervision of a... supervisor.
 
 Only a selected number of fields are parsed for each pokemon.
 
