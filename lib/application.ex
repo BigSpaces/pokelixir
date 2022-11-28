@@ -6,7 +6,7 @@ defmodule Pokelixir.Application do
   def start(_type, args) do
     IO.puts(args)
     children = [
-     {PokelixirCache, "Cache started"}
+     {PokelixirCacheServer, "Cache started"}
     ]
     opts = [strategy: :one_for_one, name: Pokelixir.Supervisor]
       Supervisor.start_link(children, opts)

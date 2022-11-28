@@ -1,32 +1,20 @@
 defmodule PokelixirCache do
   @moduledoc """
 
-  This module is the first one to be initialized by the Pokelixir Application.app()
-  The Supervision Tree starts the caching features of the app
-  In this version, only pokemon structs are cached. Code is prepared to scale to handle caching of abilities and types.
+  This module handles:
+  - initialization of the ETS cache tables - cache_init/0
+  - putting pokemons into the cache - put/1
+  - getting pokemons from the cache - get/1
 
   """
 
-  use GenServer
-  @table_pokemons :pokemon_cache
-  # @table_abilities :abilities_cache
-
-  @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: :pokelixir_cache)
-  end
-
-  @impl true
-  @spec init(any) :: {:ok, any}
-  def init(init_arg) do
-    PokelixirCache.cache_init()
-    {:ok, init_arg}
-  end
 
   @doc """
-  Create a new ETS Cache if it doesn't already exists
-  :ets.new(@table_abilities, [:set, :public, :named_table]) - Future implementation of abilities cache
+  Gets called by the PokelixirCacheServer at startup
+  Creates a new ETS Cache if it doesn't already exists
   """
+  @table_pokemons :pokemon_cache
+
 
   @spec cache_init :: atom | :ets.tid()
   def cache_init do
@@ -51,20 +39,5 @@ defmodule PokelixirCache do
     GenServer.call(:pokelixir_cache, {:get, name})
   end
 
-  @impl true
-  def handle_cast({:put, pokemon}, _state) do
-    IO.inspect(pokemon, label: "ETS PUT")
-    true = :ets.insert(@table_pokemons, {pokemon.name, pokemon})
-    {:noreply, :ok}
-  end
 
-  @impl true
-  def handle_call({:get, name}, _from, _state) do
-    IO.inspect(:ets.lookup(@table_pokemons, name), label: "ETS GET #{name}")
-
-    case :ets.lookup(@table_pokemons, name) do
-      [{^name, pokemon}] -> {:reply, pokemon, :ok}
-      _else -> {:reply, nil, :ok}
-    end
-  end
 end
